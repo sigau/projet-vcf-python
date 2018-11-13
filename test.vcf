@@ -1,0 +1,32 @@
+##fileformat=VCFv4.0
+##ALT=<ID=INS:ME:ALU,Description="Alu element insertion">
+##ALT=<ID=INS:ME:L1,Description="L1 element insertion">
+##ALT=<ID=INS:ME:SVA,Type="SVA element insertion">
+##INFO=<ID=CIPOS,Number=2,Type=Integer,Description="Confidence interval around POS for imprecise variants">
+##INFO=<ID=DBVARID,Number=1,Type=String,Description="ID of this element in DBVAR">
+##INFO=<ID=DBRIPID,Number=1,Type=String,Description="ID of this element in DBRIP">
+##INFO=<ID=PUBID,Number=1,Type=String,Description="ID of this element in publication">
+##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description="Imprecise structural variation">
+##INFO=<ID=VALIDATED,Number=0,Type=Flag,Description="validated">
+##INFO=<ID=VALMETHOD,Number=1,Type=String,Description="validation method (PCR ASM CGH SAV CAP)">
+##INFO=<ID=SVMETHOD,Number=1,Type=String,Description="detection method (RP RD SR AS)">
+##INFO=<ID=NOVEL,Number=0,Type=Flag,Description="Indicates a novel structural variation">
+##INFO=<ID=SVLEN,Number=-1,Type=Integer,Description="Difference in length between REF and ALT alleles">
+##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
+##INFO=<ID=HOMLEN,Number=1,Type=Integer,Description="Target Site Duplication length">
+##INFO=<ID=NSF5,Number=1,Type=Integer,Description="Number of Supporting Fragments from 5prime side">
+##INFO=<ID=NSF3,Number=1,Type=Integer,Description="Number of Supporting Fragments from 3prime side">
+##FILTER=<ID=7SLRNA,Description="Alu insertion too close to a 7SLRNA annoation">
+##FILTER=<ID=PCR_invalidated,Description="Variant invalidated by PCR experiment">
+##fileDate=20100625
+##source=CS:printMEIvcf.m
+##reference=1000GenomesPilot-NCBI36
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
+1	5856877	P2_MEI_373	A	<INS:ME:ALU>	4	.	SVLEN=256;SVTYPE=INS;CIPOS=-17,17;IMPRECISE;HOMLEN=5;NOVEL;VALIDATED;VALMETHOD=PCR;SVMETHOD=SR|RP;NSF5=36;NSF3=30
+1	8369214	P2_MEI_1371	A	<INS:ME:ALU>	40	.	SVLEN=190;SVTYPE=INS;CIPOS=-27,27;IMPRECISE;HOMLEN=8;PUBID=Xing|GR2009|1104685352214;SVMETHOD=RP;NSF5=58;NSF3=52
+1	11522420	P2_MEI_2211	A	<INS:ME:ALU>	40	.	SVLEN=87;SVTYPE=INS;CIPOS=-23,23;IMPRECISE;NOVEL;SVMETHOD=SR;NSF5=1;NSF3=0
+1	15362711	P2_MEI_2215	T	<INS:ME:ALU>	40	.	SVTYPE=INS;CIPOS=-23,23;IMPRECISE;NOVEL;VALIDATED;VALMETHOD=PCR;SVMETHOD=SR;NSF5=4;NSF3=0
+1	20129669	P2_MEI_350	G	<INS:ME:ALU>	10	.	SVLEN=305;SVTYPE=INS;CIPOS=-19,19;IMPRECISE;HOMLEN=26;NOVEL;VALIDATED;VALMETHOD=PCR;SVMETHOD=SR|RP;NSF5=15;NSF3=18
+1	23853711	P2_MEI_363	C	<INS:ME:ALU>	40	.	SVLEN=297;SVTYPE=INS;CIPOS=-18,18;IMPRECISE;HOMLEN=19;NOVEL;VALIDATED;VALMETHOD=PCR;SVMETHOD=SR|RP;NSF5=32;NSF3=25
+1	24813852	P2_MEI_2227	T	<INS:ME:ALU>	4	.	SVLEN=305;SVTYPE=INS;CIPOS=-23,23;IMPRECISE;HOMLEN=17;NOVEL;SVMETHOD=SR;NSF5=9;NSF3=2
+1
