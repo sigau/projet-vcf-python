@@ -8,33 +8,49 @@ from pprint import pprint
 #a utiliser avec VCF4.1
 #teste sur ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/
 
-#####ouvrir/recuperer le fichier
+#####ouvrir/recuperer le fichier######
+fichiervcf=input("nom du fichier: ")
 
-fichiervcf=open(input("nom du fichier :"),"r")
-#print(fichiervcf)
-fichiervcf2=str(fichiervcf)
-
-######recup de l'extention
-
-name=re.search("\s(.{6})(.*)'\s(.{4})\=",fichiervcf2)
-#print(name.group(2))
-name2=name.group(2)
-#print(name2)
-extention=re.search("\.(.+)",name2)
-extention2=extention.group(1)
-#print(extention2)
-
-#####verification de l'extention 
-
-if (extention2=="vcf"):
-    contenu=fichiervcf.read()
-    print (contenu)
-    fichiervcf.close()
+               ######verifier que c'est un fichier######
+if os.path.isfile(fichiervcf) :
+    print("c'est un fichier")
+    fichiervcf2=open(fichiervcf,"r")
+    #fichiervcf=open(input("nom du fichier :"),"r")
+    #print(fichiervcf)
+    fichiervcf3=str(fichiervcf2)
     
-    
-if(extention2=="vcf.tar.gz" or extention2=="vcf.tgz"):
-    print("merde ça cloche")
-    #autoriser le .tgz uniquememnt s'il contient que un seul fichier
+             ######verifier que le fichier n'est pas vide###### 
+    if ( os.path.getsize(fichiervcf)!=0):
+        print(os.path.getsize(fichiervcf))
+                       ######recup de l'extention######
+        name=re.search("\s(.{6})(.*)'\s(.{4})\=",fichiervcf3)
+        #print(name.group(2))
+        name2=name.group(2)
+        #print(name2)
+        extention=re.search("\.(.+)",name2)
+        extention2=extention.group(1)
+        #print(extention2)
+   
+   #####verification de l'extention ######
 
+        if (extention2=="vcf"):
+            contenu=fichiervcf2.read()
+            print (contenu)
+            fichiervcf2.close()
+
+        elif(extention2=="vcf.tar.gz" or extention2=="vcf.tgz"):
+            print("le fichier va etre decompresser")
+            #autoriser le .tgz uniquememnt s'il contient que un seul fichier
+            decompresse=gzip.open(fichiervcf2,"r")
+            contenu=decompresse.read()
+            print (contenu)
+            decompresse.close()
+        
+        else :
+            print("les fichier accepter sont .vcf ou .vcf.tar.gz ou vcr.tgz")
+
+    else :
+        print("fichier vide")
 else :
-    print("les fichier accepter sont .vcf ou .vcf.tar.gz ou vcr.tgz")
+    print("seul les fichiers individuels sont autorisé")
+    
