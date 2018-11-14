@@ -27,5 +27,15 @@ for var in contenu :
         substitution+=1
         variation+=1
 
+if (variation<5):
+        print("pas assez d'information pour une analyse")
+        
+elif (variation<30):
+        print("analyse peu fiable ")
+        #mais on va quand meme faire l'analyse ?
+        
+else :
+        #analyse 
+        
 pprint(
         
