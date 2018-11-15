@@ -9,7 +9,7 @@ from pprint import pprint
 #teste sur ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/
 
 
-info=re.search("(^\d*|^X|^Y)\s(\d*)\s(.*)\s([ACGT]*)\s([ACGT]*)\s")
+info=re.search("(^\d*|^X|^Y)\s(\d*)\s(.*)\s([ACGT]*)\s([ACGT]*)\s(\d*|.)\s(\S*)\s")
 
 #recuperation du chromosome("(^\d*|^X|^Y)\s")
 if info :
