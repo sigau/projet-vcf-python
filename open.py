@@ -37,38 +37,38 @@ if os.path.isfile(fichiervcf) :
             ####verifier la version###
         tesver=fichiervcf2.read()
         version=re.search("fileformat=(.*)\s",tesver)
-        print(tesver)
-        if (version=="VCFv4.1"):
-                    
-                       ######recup de l'extention######
-             name=re.search("\s(.{6})(.*)'\s(.{4})\=",fichiervcf3)
-             #print(name.group(2))
-             name2=name.group(2)
-             print(name2)
-             extention=re.search("\.(.+)",name2)
-             extention2=extention.group(1)
-             print(extention2)
-   
-   #####verification de l'extention ######
+        if (version.group(1)=="VCFv4.1"):
+            
+             ######recup de l'extention######
+            name=re.search("\s(.{6})(.*)'\s(.{4})\=",fichiervcf3)
+            name2=name.group(2)
+            print(name2)
+            extention=re.search("\.(.+)",name2)
+            extention2=extention.group(1)
+            print(extention2)
 
-             if (extention2=="vcf"):
-                 contenu=fichiervcf2.read()
-                 print (contenu)
-                 fichiervcf2.close()
 
-             elif(extention2=="vcf.tar.gz" or extention2=="vcf.tgz"):
-                 print("le fichier va etre decompresser")
-                 #autoriser le .tgz uniquememnt s'il contient que un seul fichier
-                 decompresse=gzip.open(fichiervcf2,"r")
-                 contenu=decompresse.read()
-                 print (contenu)
-                 decompresse.close()
-        
-             else :
-                 print("les fichier accepter sont .vcf ou .vcf.tar.gz ou vcr.tgz")
+            #####verification de l'extention ######
+            if (extention2=="vcf") :
+                print("ouvrir le fichier ?")
+                rep=input("yes/no :")
+                if (rep=="yes" or rep=="Yes" or rep=="YES"):
+                    print (tesver)
+                fichiervcf2.close()
+                
+            elif(extention2=="vcf.tar.gz" or extention2=="vcf.tgz"):
+                print("le fichier va etre decompresser")
+                #autoriser le .tgz uniquememnt s'il contient que un seul fichier
+                decompresse=gzip.open(fichiervcf2,"r")
+                contenu=decompresse.read()
+                print (contenu)
+                decompresse.close()
+                
+            else :
+                print("les fichier accepter sont .vcf ou .vcf.tar.gz ou vcr.tgz")
 
         else:
-             print("mettre un fichier en version 4.1 les autres sont hasbeen ou dans le turfu")
+            print("mettre un fichier en version 4.1 les autres sont hasbeen ou dans le turfu")
                  
     else :
         print("fichier vide")
