@@ -9,48 +9,48 @@ from pprint import pprint
 #teste sur ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/
 
 fichiervcf=sys.argv[1]
-fichiervcf2=open(fichiervcf,"r")
-tesver=fichiervcf2.read()
-#print(tesver) ok
+with open(fichiervcf,"r") as fichiervcf2:
+#tesver=fichiervcf2.readline()
+#print(tesver)
 
-for ligne in tesver :
-	info=re.search("(^\d*|^X|^Y)\s(\d*)\s(.*)\s([ACGT]*)\s([ACGT]*)\s(\d*|.)\s(\S*)\s",ligne)
-
+	for ligne in fichiervcf2:
+		info=re.search("(^\d*|^X|^Y)\s(\d*)\s(.*)\s([ACGT]*)\s([ACGT]*)\s(\d*|.)\s(\S*)\s",ligne)
+	
 
 #recuperation du chromosome("(^\d*|^X|^Y)\s")
-	if info :
-		chromosome=info.group(1)
-		print("test chromosome") #not ok
+		if info :
+			chromosome=info.group(1)
+			print(chromosome) #not ok
 
 #recuperation de la position("\s(\d*)\s")
-	if info :
-		position=info.group(2)
-		print("test position")
+	#if info :
+			position=info.group(2)
+			print(position)
 
 #recuperation Id("\s(.*)\s")
-	if info :
-		identifiant=info.group(3)
-		print("test identifiant")
+	#if info :
+			identifiant=info.group(3)
+			print(identifiant)
 
 #recuperation de la base de reference ("\s([ACGT]*)\s")
-	if info :
-		ref=info.group(4)
-		print("test ref")
+	#if info :
+			ref=info.group(4)
+			print(ref)
 
 #recuperation de la variation ("\s([ACGT]*)\s")
-	if info:
-		alt=info.group(5)
-		print("test alt")
+	#if info:
+			alt=info.group(5)
+			print(alt)
 
 #recuperation de la qualité ("\s(\d*|.)\s")
-	if info :
-		qualite=info.group(6)
-		print("test quali")
+	#if info :
+			qualite=info.group(6)
+			print(qualite)
 
 #recuperation du filtre ("\s(\S*)\s")
-	if info :
-		filtre=info.group(7)
-		print("test filtre")
+	#if info :
+			filtre=info.group(7)
+			print(filtre)
 
 print("test final")
     
