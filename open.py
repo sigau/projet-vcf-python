@@ -38,6 +38,7 @@ if os.path.isfile(fichiervcf) :
         tesver=fichiervcf2.read()
         version=re.search("fileformat=(.*)\s",tesver)
         if (version.group(1)=="VCFv4.1"):
+            print("version 4.1")
             
              ######recup de l'extention######
             name=re.search("\s(.{6})(.*)'\s(.{4})\=",fichiervcf3)
@@ -52,7 +53,7 @@ if os.path.isfile(fichiervcf) :
             if (extention2=="vcf") :
                 print("ouvrir le fichier ?")
                 rep=input("yes/no :")
-                if (rep=="yes" or rep=="Yes" or rep=="YES"):
+                if (rep=="yes" or rep=="Yes" or rep=="YES" or rep=="y" or rep=="Y"):
                     print (tesver)
                 fichiervcf2.close()
                 
