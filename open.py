@@ -11,7 +11,7 @@ from pprint import pprint
 #####ouvrir/recuperer le fichier######
 fichiervcf=sys.argv[1]
 
-               ######verifier que c'est un fichier######
+######verifier que c'est un fichier######
 if os.path.isfile(fichiervcf) :
     print("c'est un fichier")
     with open(fichiervcf,"r") as fichiervcf2 :
@@ -55,9 +55,9 @@ if os.path.isfile(fichiervcf) :
                         print (tesver)
                     fichiervcf2.close()
                     
+                    #autoriser le .tgz uniquememnt s'il contient que un seul fichier
                 elif(extention2=="vcf.tar.gz" or extention2=="vcf.tgz"):
                     print("le fichier va etre decompresser")
-                    #autoriser le .tgz uniquememnt s'il contient que un seul fichier
                     decompresse=gzip.open(fichiervcf2,"r")
                     contenu=decompresse.read()
                     print (contenu)

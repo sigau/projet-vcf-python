@@ -20,7 +20,7 @@ with open(fichiervcf,"r") as fichiervcf2:
 #recuperation du chromosome("(^\d*|^X|^Y)\s")
 		if info :
 			chromosome=info.group(1)
-			print(chromosome) #not ok
+			print("chromosome "+chromosome) #not ok
 
 #recuperation de la position("\s(\d*)\s")
 	#if info :
