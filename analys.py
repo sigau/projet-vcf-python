@@ -16,17 +16,22 @@ for var in contenu :
     if ((len(ref)>len(alt))or( alt=="-")):
         deletion+=1
         variation+=1
-
+        print("test deletion")
+        print("test variation")
     #compte des insertion
     if((len(ref)<len(alt)):
         insertion+=1
         variation+=1
+        print("test deletion")
+        print("test variation")
 
     #compte des substituion
     if ((len(ref)=len(alt)):
         substitution+=1
         variation+=1
-
+        print("test deletion")
+        print("test variation")
+        
 if (variation<5):
         print("pas assez d'information pour une analyse")
         

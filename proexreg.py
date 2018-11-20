@@ -13,14 +13,20 @@ with open(fichiervcf,"r") as fichiervcf2:
 #tesver=fichiervcf2.readline()
 #print(tesver)
 
+	substitution=0
+	insertion=0
+	deletion=0
+	variation=0
+
+
 	for ligne in fichiervcf2:
 		info=re.search("(^\d*|^X|^Y)\s(\d*)\s(.*)\s([ACGT]*)\s([ACGT]*)\s(\d*|.)\s(\S*)\s",ligne)
 	
 
 #recuperation du chromosome("(^\d*|^X|^Y)\s")
 		if info :
-			chromosome=info.group(1)
-			print("chromosome "+chromosome) #not ok
+			chromosome="chromosome "+info.group(1)
+			print(chromosome) #ok
 
 #recuperation de la position("\s(\d*)\s")
 	#if info :
@@ -46,11 +52,39 @@ with open(fichiervcf,"r") as fichiervcf2:
 	#if info :
 			qualite=info.group(6)
 			print(qualite)
-
+			
 #recuperation du filtre ("\s(\S*)\s")
 	#if info :
 			filtre=info.group(7)
 			print(filtre)
 
+
+#compte des variation 
+	#compte des deletions
+			if ((len(ref)>len(alt))or( alt=="-")):
+				deletion+=1
+				variation+=1
+				print("test deletion")
+				print("test variation")
+	    #compte des insertion
+			if(len(ref)<len(alt)):
+				insertion+=1
+				variation+=1
+				print("test insertion")
+				print("test variation")
+
+	    #compte des substituion
+			if (len(ref)==len(alt)):
+				substitution+=1
+				variation+=1
+				print("test substitution")
+				print("test variation")
+
 print("test final")
-    
+print("nb variation= "+ str(variation)+"\n"+"nb substitution= "+str(substitution)+"\n"+"nb insertion="+str(insertion)+"\n"+"nb deletions= "+str(deletion))
+
+# ù de chaque type de variation
+pins=(insertion/variation)*100
+pdel=(deletion/variation)*100
+psub=(substitution/variation)*100
+print("% substitution= "+str(psub)+"%"+"\n"+"% insertion="+str(pins)+"%"+"\n"+"% deletions= "+str(pdel)+"%")
