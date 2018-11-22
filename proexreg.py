@@ -12,12 +12,13 @@ fichiervcf=sys.argv[1]
 with open(fichiervcf,"r") as fichiervcf2:
 #tesver=fichiervcf2.readline()
 #print(tesver)
-
+	dicopos={}
+	dicovar={}
 	substitution=0
 	insertion=0
 	deletion=0
 	variation=0
-
+	typevariant=""
 
 	for ligne in fichiervcf2:
 		info=re.search("(^\d*|^X|^Y)\s(\d*)\s(.*)\s([ACGT]*)\s([ACGT]*)\s(\d*|.)\s(\S*)\s",ligne)
@@ -26,37 +27,37 @@ with open(fichiervcf,"r") as fichiervcf2:
 #recuperation du chromosome("(^\d*|^X|^Y)\s")
 		if info :
 			chromosome="chromosome "+info.group(1)
-			print(chromosome) #ok
+			#print(chromosome) #ok
 
 #recuperation de la position("\s(\d*)\s")
 	#if info :
 			position=info.group(2)
-			print(position)
+			#print(position)
 
 #recuperation Id("\s(.*)\s")
 	#if info :
 			identifiant=info.group(3)
-			print(identifiant)
+			#print(identifiant)
 
 #recuperation de la base de reference ("\s([ACGT]*)\s")
 	#if info :
 			ref=info.group(4)
-			print(ref)
+			#print(ref)
 
 #recuperation de la variation ("\s([ACGT]*)\s")
 	#if info:
 			alt=info.group(5)
-			print(alt)
+			#print(alt)
 
 #recuperation de la qualité ("\s(\d*|.)\s")
 	#if info :
 			qualite=info.group(6)
-			print(qualite)
+			#print(qualite)
 			
 #recuperation du filtre ("\s(\S*)\s")
 	#if info :
 			filtre=info.group(7)
-			print(filtre)
+			#print(filtre)
 
 
 #compte des variation 
@@ -64,26 +65,60 @@ with open(fichiervcf,"r") as fichiervcf2:
 			if ((len(ref)>len(alt))or( alt=="-")):
 				deletion+=1
 				variation+=1
-				print("test deletion")
-				print("test variation")
+				#print("test deletion")
+				#print("test variation")
+				typevariant="deletion"
 	    #compte des insertion
 			if(len(ref)<len(alt)):
 				insertion+=1
 				variation+=1
-				print("test insertion")
-				print("test variation")
+				#print("test insertion")
+				#print("test variation")
+				typevariant="insertion"
 
 	    #compte des substituion
 			if (len(ref)==len(alt)):
 				substitution+=1
 				variation+=1
-				print("test substitution")
-				print("test variation")
+				#print("test substitution")
+				#print("test variation")
+				typevariant="substitution"
 
-print("test final")
+
+
+								#####dico doit ressembler à ###########
+#deux dico
+#print dicopos :
+			#chromosome  
+							#position sk
+											#liste de string (typevariant,ref,alt)
+#print dicovar :
+			#chromosome  
+							#type variant
+											#nb du type de variation
+
+																	#ou
+#print dico :
+			  #chromosome 	
+			  				# typevariant 
+			  								#nbtypevariant  
+			  												#liste de string (position ref alt)
+								########fin############
+
+			#print(typevariant) #ok
+			if chromosome in dicovar.keys():
+				if typevariant in dicovar[chromosome].keys():
+					dicovar[chromosome].getvalues(typevariant)+1
+				else :
+					dicovar[chromosome][typevariant]=1
+			else:
+				dicovar[]
+
+
+#print("test final")
 print("nb variation= "+ str(variation)+"\n"+"nb substitution= "+str(substitution)+"\n"+"nb insertion="+str(insertion)+"\n"+"nb deletions= "+str(deletion))
 
-# ù de chaque type de variation
+# % de chaque type de variation
 pins=(insertion/variation)*100
 pdel=(deletion/variation)*100
 psub=(substitution/variation)*100
