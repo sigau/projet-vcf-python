@@ -12,8 +12,8 @@ fichiervcf=sys.argv[1]
 with open(fichiervcf,"r") as fichiervcf2:
 #tesver=fichiervcf2.readline()
 #print(tesver)
-	dicopos={}
 	dicovar={}
+	liste=[]
 	substitution=0
 	insertion=0
 	deletion=0
@@ -103,18 +103,28 @@ with open(fichiervcf,"r") as fichiervcf2:
 			  				# typevariant 
 			  								#nbtypevariant  
 			  												#liste de string (position ref alt)
+			  												#dicovar[chromosome].getvalues(typevariant)+1
 								########fin############
-
-			#print(typevariant) #ok
+			liste=[position,ref,alt]
 			if chromosome in dicovar.keys():
 				if typevariant in dicovar[chromosome].keys():
-					dicovar[chromosome].getvalues(typevariant)+1
-				else :
-					dicovar[chromosome][typevariant]=1
+					dicovar[chromosome][typevariant].append(liste)
+				else:
+					dicovar[chromosome][typevariant]=typevariant
+					dicovar[chromosome][typevariant]=liste
 			else:
-				dicovar[]
+				dicovar[chromosome]={}
+				dicovar[chromosome][typevariant]=typevariant
+				dicovar[chromosome][typevariant]=liste
 
+			#if chromosome in dicovar.keys():
+			#	dicovar[chromosome]["position"].append(position)
+			#	dicovar[chromosome]["ref"].append(ref)
+			#	dicovar[chromosome]["alt"].append(alt)
+			#else :
+			#	dicovar[chromosome]={"position":[position], "ref":[ref], "alt":[alt]}
 
+pprint(dicovar)
 #print("test final")
 print("nb variation= "+ str(variation)+"\n"+"nb substitution= "+str(substitution)+"\n"+"nb insertion="+str(insertion)+"\n"+"nb deletions= "+str(deletion))
 

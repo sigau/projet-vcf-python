@@ -3,20 +3,35 @@
 
  
 import os, sys, re, gzip 
+import matplotlib.pyplot as plt 
+from tkinter import *
+from tkinter.messagebox import *
+from tkinter.filedialog import *
 from pprint import pprint
 
 #a utiliser avec VCF4.1
 #teste sur ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/
 
+#fenetre = Tk()
+#label = Label(fenetre, text="kowalski's analysis",padx=20,pady=20)
+#bouton=Button(fenetre, text="c'est partie", command=fenetre.quit)
+#bouton.pack()
+fichiervcf=askopenfilename(title="quel fichier voulez-vous ouvrir?",filetypes=[("fichier vcf",".vcf",),("fichier vcf compresser .tgz","vcf.tgz"),("fichier vcf compresser vcf.tar.gz","vcf.tar.gz")])
+#label.pack()
+#fenetre.mainloop()
 #####ouvrir/recuperer le fichier######
-fichiervcf=sys.argv[1]
+#fichiervcf=sys.argv[1]
+
 
 def analyse(fichiervcf):
 
     with open(fichiervcf,"r") as fichiervcf2:
         #tesver=fichiervcf2.readline()
         #print(tesver)
-
+        global dicovar
+        dicovar={}
+        global liste
+        liste=[]
         global substitution
         substitution=0
         global insertion
@@ -92,6 +107,20 @@ def analyse(fichiervcf):
                     #print("test variation")
                     typevariant="substitution"
 
+                liste=[position,ref,alt]
+                if chromosome in dicovar.keys():
+                    if typevariant in dicovar[chromosome].keys():
+                        dicovar[chromosome][typevariant].append(liste)
+                    else:
+                        dicovar[chromosome][typevariant]=typevariant
+                        dicovar[chromosome][typevariant]=liste
+                else:
+                    dicovar[chromosome]={}
+                    dicovar[chromosome][typevariant]=typevariant
+                    dicovar[chromosome][typevariant]=liste
+
+
+
     #print("test final")
     #print("nb variation= "+ str(variation)+"\n"+"nb substitution= "+str(substitution)+"\n"+"nb insertion="+str(insertion)+"\n"+"nb deletions= "+str(deletion))
 
@@ -166,9 +195,29 @@ if os.path.isfile(fichiervcf) :
                     rep=input("yes/no :")
                     if (rep=="yes" or rep=="Yes" or rep=="YES" or rep=="y" or rep=="Y"):
                         print("nb variation= "+ str(variation)+"\n"+"nb substitution= "+str(substitution)+"\n"+"nb insertion="+str(insertion)+"\n"+"nb deletions= "+str(deletion))
-                        print("% substitution= "+str(psub)+"%"+"\n"+"% insertion="+str(pins)+"%"+"\n"+"% deletions= "+str(pdel)+"%")                        
+                        print("% substitution= "+str(psub)+"%"+"\n"+"% insertion="+str(pins)+"%"+"\n"+"% deletions= "+str(pdel)+"%")
+                    print("voulez-vous print le grouphique ?")
+                    repgraph=input("yes/no : ")
+                    if (repgraph=="yes" or repgraph=="Yes" or repgraph=="YES" or repgraph=="y" or repgraph=="Y"):
+                        print("test")
+                        labels=["deletions","substitution","insertion"]
+                        data=[deletion,substitution,insertion]
+                        explode=(0,0,0)
+                        plt.pie(data,explode=explode,labels=labels,autopct='%1.1f%%',startangle=90,shadow=True)
+                        plt.axis('equal') 
+                        print("pour continuer fermer le grouphique")
+                        plt.show()  
+                    print("voulez-vous print le dico entier? ")
+                    repdico=input("Yes/no: ")
+                    if (repdico=="yes" or repdico=="Yes" or repdico=="YES" or repdico=="y" or repdico=="Y"):  
+                        pprint(dicovar)
+                    else:
+                        print("voulez-vous print le dico pour un chromosome particulier")
+                        rep2=input("yes/no : ")
+                        if (rep2=="yes" or rep2=="Yes" or rep2=="YES" or rep2=="y" or rep2=="Y"):
+                            print("liste avec tkinter")
+                    print("merci d'avoir utiliser kowalski ! ")               
                     fichiervcf2.close()
-
                 else :
                     print("mettre un fichier en version 4.1 les autres sont hasbeen ou dans le turfu")
 
