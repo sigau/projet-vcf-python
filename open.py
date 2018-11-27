@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 from tkinter import *
 from tkinter import messagebox
 from tkinter.filedialog import *
-
 from pprint import pprint
 
 #a utiliser avec VCF4.1
@@ -192,7 +191,7 @@ if os.path.isfile(fichiervcf) :
                             exit()
 
                     analyse(name2)
-                    if messagebox.askquestion("kowalski's analysis","print analyse du fichier ?"):
+                    if (messagebox.askquestion("kowalski's analysis","print analyse du fichier ?")=="yes"):
                         print("nb variation= "+ str(variation)+"\n"+"nb substitution= "+str(substitution)+"\n"+"nb insertion="+str(insertion)+"\n"+"nb deletions= "+str(deletion))
                         print("% substitution= "+str(psub)+"%"+"\n"+"% insertion="+str(pins)+"%"+"\n"+"% deletions= "+str(pdel)+"%")
                     if (messagebox.askquestion("kowalski's analysis","voulez-vous print le grouphique ?")=="yes"):
@@ -207,12 +206,14 @@ if os.path.isfile(fichiervcf) :
                         pprint(dicovar)
                     else:
                         if (messagebox.askquestion("kowalski's analysis","voulez-vous print le dico pour un chromosome particulier ?")=="yes"):
+
+
+                            ######a corriger pour ajouter des liste deroulantes####
                             listchr=[]
-                            for i in dicovar:
-                                listchr.append(i)
-                            print(listchr)
-                            print(len(listchr))
                             listetk = Listbox(fenetre)
+                            for i in range(0,len(dicovar.keys)) :
+                                listchr.append(dicovar[1])
+                                i=i+1
                             for i in listchr:
                                 listetk.insert(i,listchr.index(i))
                             listetk.pack()
