@@ -13,7 +13,7 @@ from pprint import pprint
 #teste sur ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/
 
 fenetre = Tk()
-label = Label(fenetre, text="kowalski's analysis",padx=20,pady=20)
+label = Label(fenetre, text="kowalski's analysis",padx=500,pady=500)
 bouton=Button(fenetre, text="continuer", command=fenetre.quit)
 bouton.pack()
 fichiervcf=askopenfilename(title="quel fichier voulez-vous ouvrir?",filetypes=[("fichier vcf",".vcf",),("fichier vcf compresser .tgz","vcf.tgz"),("fichier vcf compresser vcf.tar.gz","vcf.tar.gz"),('all files a tes risque et perils','.*')])
@@ -138,7 +138,7 @@ def analyse(fichiervcf):
 
 ######verifier que c'est un fichier######
 if os.path.isfile(fichiervcf) :
-    print("c'est un fichier")
+    messagebox.showinfo("kowalski's analysis","ok c'est bon c'est un fichier, on continue !")
     with open(fichiervcf,"r") as fichiervcf2 :
         fichiervcf3=str(fichiervcf2)
         fichiervcf4=fichiervcf2.readlines() 
@@ -146,7 +146,8 @@ if os.path.isfile(fichiervcf) :
 
                  ######verifier que le fichier n'est pas vide###### 
         if ( os.path.getsize(fichiervcf)!=0):
-            print("c'est un beau bébé il pese "+str(os.path.getsize(fichiervcf))+" octets")
+            messagebox.showinfo("kowalski's analysis","c'est un beau bébé il pese "+str(os.path.getsize(fichiervcf))+" octets"+"\n"+"on continue !")
+            #print("c'est un beau bébé il pese "+str(os.path.getsize(fichiervcf))+" octets")
 
             
                 ######recup de l'extention######
@@ -155,7 +156,8 @@ if os.path.isfile(fichiervcf) :
             print("nom du fichier: "+name2)
             extention=re.search("\.(.+)",name2)
             extention2=extention.group(1)
-            print("fichier au format "+extention2)
+            messagebox.showinfo("kowalski's analysis","fichier au format "+extention2)
+            #print("fichier au format "+extention2)
 
 
                 #####verification de l'extention ######
@@ -174,8 +176,9 @@ if os.path.isfile(fichiervcf) :
 
 
                     ######verification de la version####
-                if (version.group(1)=="VCFv4.1"):                     
-                    print("c'est un VCF en version 4.1")
+                if (version.group(1)=="VCFv4.1"):
+                    messagebox.showinfo("kowalski's analysis","c'est un VCF en version 4.1")
+                    #print("c'est un VCF en version 4.1")
                 
 
                     #est-ce que le corps est vide ?
@@ -184,16 +187,19 @@ if os.path.isfile(fichiervcf) :
                         if re.search("^(#)",line):
                              continue
                         if corps:
-                            print("je vois la tete et un corps")
+                            #print("je vois la tete et un corps")
+                            messagebox.showinfo("kowalski's analysis","je vois la tete et un corps")
                             break
                         else :
-                            print("pas de corps")
+                            #print("pas de corps")
+                            messagebox.showerror("kowalski's analysis","pas de corps !")
                             exit()
 
                     analyse(name2)
                     if (messagebox.askquestion("kowalski's analysis","print analyse du fichier ?")=="yes"):
-                        print("nb variation= "+ str(variation)+"\n"+"nb substitution= "+str(substitution)+"\n"+"nb insertion="+str(insertion)+"\n"+"nb deletions= "+str(deletion))
-                        print("% substitution= "+str(psub)+"%"+"\n"+"% insertion="+str(pins)+"%"+"\n"+"% deletions= "+str(pdel)+"%")
+                        nbvar=("nb variation= "+ str(variation)+"\n"+"nb substitution= "+str(substitution)+"\n"+"nb insertion="+str(insertion)+"\n"+"nb deletions= "+str(deletion))
+                        pcvar=("pourcentage de substitution= "+str(psub)+"%"+"\n"+"pourcentage de insertion="+str(pins)+"%"+"\n"+"pourcentage de deletions= "+str(pdel)+"%")
+                        messagebox.showinfo("kowalski's analysis",nbvar +"\n"+pcvar)
                     if (messagebox.askquestion("kowalski's analysis","voulez-vous print le grouphique ?")=="yes"):
                         labels=["deletions","substitution","insertion"]
                         data=[deletion,substitution,insertion]
@@ -203,7 +209,8 @@ if os.path.isfile(fichiervcf) :
                         print("pour continuer cliquer sur le bouton continuer")
                         plt.show()  
                     if (messagebox.askquestion("kowalski's analysis","voulez-vous print le dico entier? ?")=="yes"):
-                        pprint(dicovar)
+                        messagebox.showinfo("kowalski's analysis",dicovar)
+                        #pprint(dicovar)
                     else:
                         if (messagebox.askquestion("kowalski's analysis","voulez-vous print le dico pour un chromosome particulier ?")=="yes"):
 
@@ -219,11 +226,11 @@ if os.path.isfile(fichiervcf) :
                             listetk.pack()
                             print("liste avec tkinter")
                     
-                    
-                    print("merci d'avoir utiliser kowalski ! ")               
-                    fichiervcshowerrorf2.close()
+                    messagebox.showinfo("kowalski's analysis","merci d'avoir utiliser kowalski !" )
+                    #print("merci d'avoir utiliser kowalski ! ")               
+                    fichiervcf2.close()
                 else :
-                    messagebox.showerror("kowalski's analysis","mettre un fichier en version 4.1 les autres sont hasbeen ou dans le turfu")
+                    messagebox.showerror("kowalski's analysis","mettre un fichier en version 4.1 les autres sont hasbeen ou dans le turfshowinfou")
                     #print("mettre un fichier en version 4.1 les autres sont hasbeen ou dans le turfu")
 
             else:
