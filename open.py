@@ -5,20 +5,21 @@
 import os, sys, re, gzip 
 import matplotlib.pyplot as plt 
 from tkinter import *
-from tkinter.messagebox import *
+from tkinter import messagebox
 from tkinter.filedialog import *
+
 from pprint import pprint
 
 #a utiliser avec VCF4.1
 #teste sur ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/
 
-#fenetre = Tk()
-#label = Label(fenetre, text="kowalski's analysis",padx=20,pady=20)
-#bouton=Button(fenetre, text="c'est partie", command=fenetre.quit)
-#bouton.pack()
-fichiervcf=askopenfilename(title="quel fichier voulez-vous ouvrir?",filetypes=[("fichier vcf",".vcf",),("fichier vcf compresser .tgz","vcf.tgz"),("fichier vcf compresser vcf.tar.gz","vcf.tar.gz")])
-#label.pack()
-#fenetre.mainloop()
+fenetre = Tk()
+label = Label(fenetre, text="kowalski's analysis",padx=20,pady=20)
+bouton=Button(fenetre, text="continuer", command=fenetre.quit)
+bouton.pack()
+fichiervcf=askopenfilename(title="quel fichier voulez-vous ouvrir?",filetypes=[("fichier vcf",".vcf",),("fichier vcf compresser .tgz","vcf.tgz"),("fichier vcf compresser vcf.tar.gz","vcf.tar.gz"),('all files a tes risque et perils','.*')])
+label.pack()
+fenetre.mainloop()
 #####ouvrir/recuperer le fichier######
 #fichiervcf=sys.argv[1]
 
@@ -53,7 +54,7 @@ def analyse(fichiervcf):
                 chromosome="chromosome "+info.group(1)
                 #print(chromosome) #ok
 
-        #recuperation de la position("\s(\d*)\s")
+        #recuperation de la position("\s(\d*)\s")s
             #if info :
                 position=info.group(2)
                 #print(position)
@@ -191,40 +192,46 @@ if os.path.isfile(fichiervcf) :
                             exit()
 
                     analyse(name2)
-                    print("print analyse du fichier ?")
-                    rep=input("yes/no :")
-                    if (rep=="yes" or rep=="Yes" or rep=="YES" or rep=="y" or rep=="Y"):
+                    if messagebox.askquestion("kowalski's analysis","print analyse du fichier ?"):
                         print("nb variation= "+ str(variation)+"\n"+"nb substitution= "+str(substitution)+"\n"+"nb insertion="+str(insertion)+"\n"+"nb deletions= "+str(deletion))
                         print("% substitution= "+str(psub)+"%"+"\n"+"% insertion="+str(pins)+"%"+"\n"+"% deletions= "+str(pdel)+"%")
-                    print("voulez-vous print le grouphique ?")
-                    repgraph=input("yes/no : ")
-                    if (repgraph=="yes" or repgraph=="Yes" or repgraph=="YES" or repgraph=="y" or repgraph=="Y"):
-                        print("test")
+                    if (messagebox.askquestion("kowalski's analysis","voulez-vous print le grouphique ?")=="yes"):
                         labels=["deletions","substitution","insertion"]
                         data=[deletion,substitution,insertion]
                         explode=(0,0,0)
                         plt.pie(data,explode=explode,labels=labels,autopct='%1.1f%%',startangle=90,shadow=True)
                         plt.axis('equal') 
-                        print("pour continuer fermer le grouphique")
+                        print("pour continuer cliquer sur le bouton continuer")
                         plt.show()  
-                    print("voulez-vous print le dico entier? ")
-                    repdico=input("Yes/no: ")
-                    if (repdico=="yes" or repdico=="Yes" or repdico=="YES" or repdico=="y" or repdico=="Y"):  
+                    if (messagebox.askquestion("kowalski's analysis","voulez-vous print le dico entier? ?")=="yes"):
                         pprint(dicovar)
                     else:
-                        print("voulez-vous print le dico pour un chromosome particulier")
-                        rep2=input("yes/no : ")
-                        if (rep2=="yes" or rep2=="Yes" or rep2=="YES" or rep2=="y" or rep2=="Y"):
+                        if (messagebox.askquestion("kowalski's analysis","voulez-vous print le dico pour un chromosome particulier ?")=="yes"):
+                            listchr=[]
+                            for i in dicovar:
+                                listchr.append(i)
+                            print(listchr)
+                            print(len(listchr))
+                            listetk = Listbox(fenetre)
+                            for i in listchr:
+                                listetk.insert(i,listchr.index(i))
+                            listetk.pack()
                             print("liste avec tkinter")
+                    
+                    
                     print("merci d'avoir utiliser kowalski ! ")               
-                    fichiervcf2.close()
+                    fichiervcshowerrorf2.close()
                 else :
-                    print("mettre un fichier en version 4.1 les autres sont hasbeen ou dans le turfu")
+                    messagebox.showerror("kowalski's analysis","mettre un fichier en version 4.1 les autres sont hasbeen ou dans le turfu")
+                    #print("mettre un fichier en version 4.1 les autres sont hasbeen ou dans le turfu")
 
             else:
-                print("les fichier accepter sont .vcf ou .vcf.tar.gz ou vcr.tgz")
+                messagebox.showerror("kowalski's analysis","les fichier accepter sont .vcf ou .vcf.tar.gz ou vcr.tgz")
+                #print("les fichier accepter sont .vcf ou .vcf.tar.gz ou vcr.tgz")
                      
         else :
-            print("fichier vide")
+            messagebox.showerror("kowalski's analysis","fichier vide")
+            #print("fichier vide")
 else :
-    print("seul les fichiers individuels sont autorisé")
+    messagebox.showerror("kowalski's analysis","seul les fichiers individuels sont autorisé")
+    #print("seul les fichiers individuels sont autorisé")
