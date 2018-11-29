@@ -209,21 +209,42 @@ if os.path.isfile(fichiervcf) :
                         print("pour continuer cliquer sur le bouton continuer")
                         plt.show()  
                     if (messagebox.askquestion("kowalski's analysis","voulez-vous print le dico entier? ?")=="yes"):
-                        messagebox.showinfo("kowalski's analysis",dicovar)
+                        #messagebox.showinfo("kowalski's analysis",dicovar)
+                        top = Toplevel()
+                        top.title("titre kowalski's analysis")
+                        scrollbarY = Scrollbar(top)
+                        scrollbarY.pack(side=RIGHT, fill=Y)
+                        scrollbarX = Scrollbar(top)
+                        scrollbarX.pack(side=LEFT, fill=X)
+                        msg = Message(top, text=dicovar)
+                        msg.pack(side=LEFT, fill=BOTH,expand=1)
+                        button = Button(top, text="Dismiss", command=top.destroy)
+                        button.pack()
+                        mainloop()
                         #pprint(dicovar)
                     else:
                         if (messagebox.askquestion("kowalski's analysis","voulez-vous print le dico pour un chromosome particulier ?")=="yes"):
 
 
                             ######a corriger pour ajouter des liste deroulantes####
+                            #print(dicovar.keys())
                             listchr=[]
+                            #scrollbar = Scrollbar(fenetre)
+                            #scrollbar.pack(side=RIGHT, fill=Y)
+                            #listetk = Listbox(fenetre,width=60,height=10,font=('times',13),yscrollcommand=scrollbar.set)
+                            #listetk = Listbox(fenetre,width=60,height=10,font=('times',13))
                             listetk = Listbox(fenetre)
-                            for i in range(0,len(dicovar.keys)) :
-                                listchr.append(dicovar[1])
-                                i=i+1
-                            for i in listchr:
-                                listetk.insert(i,listchr.index(i))
                             listetk.pack()
+                            for cle in dicovar.keys():
+                                listchr.append(cle)
+                                listetk.insert(END,cle)
+                            
+                            #listetk.config(yscrollcommand=scrollbar.set)
+                            #scrollbar.config(command=listetk.yview)
+                            listetk.mainloop()
+
+                            #item=listetk.get(listetk.curselection())
+                            print("item")
                             print("liste avec tkinter")
                     
                     messagebox.showinfo("kowalski's analysis","merci d'avoir utiliser kowalski !" )
