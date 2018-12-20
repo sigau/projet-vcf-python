@@ -17,7 +17,7 @@ import webbrowser
 fenetre = Tk()
 fenetre.geometry()
 label = Label(fenetre, text="kowalski's analysis")
-bouton=Button(fenetre, text="continu", command=fenetre.quit)
+bouton=Button(fenetre, text="continue", command=fenetre.quit)
 bouton.pack()
 fichiervcf=askopenfilename(title="quel fichier voulez-vous ouvrir?",filetypes=[("vcf file",".vcf",),('all files a tes risque et perils','.*')])
     #for the next update

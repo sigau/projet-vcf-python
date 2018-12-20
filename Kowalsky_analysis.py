@@ -17,9 +17,9 @@ import webbrowser
 fenetre = Tk()
 fenetre.geometry()
 label = Label(fenetre, text="kowalski's analysis")
-bouton=Button(fenetre, text="continu", command=fenetre.quit)
+bouton=Button(fenetre, text="continue", command=fenetre.quit)
 bouton.pack()
-fichiervcf=askopenfilename(title="quel fichier voulez-vous ouvrir?",filetypes=[("vcf file",".vcf",),('all files a tes risque et perils','.*')])
+fichiervcf=askopenfilename(title="Which file do you want to open ?",filetypes=[("vcf file",".vcf",),('all files a tes risque et perils','.*')])
     #for the next update
     #("fichier vcf compresser .gz",".vcf.gz"),("fichier vcf compresser vcf.tar.gz",".vcf.tar.gz")
 label.pack(fill=BOTH, expand=True)
@@ -132,7 +132,7 @@ def analyse(fichiervcf):
 
 #### file's checking 
 if os.path.isfile(fichiervcf) :
-    messagebox.showinfo("kowalski's analysis","ok c'est bon c'est un fichier, on continue !")
+    messagebox.showinfo("kowalski's analysis","ok great that a file, go!")
     with open(fichiervcf,"r") as fichiervcf2 :
         fichiervcf3=str(fichiervcf2)
         fichiervcf4=fichiervcf2.readlines() 
@@ -140,23 +140,19 @@ if os.path.isfile(fichiervcf) :
 
                  #### just checking that the file is not empty
         if ( os.path.getsize(fichiervcf)!=0):
-            messagebox.showinfo("kowalski's analysis","c'est un beau bébé il pese "+str(os.path.getsize(fichiervcf))+" octets"+"\n"+"on continue !")
-            print("c'est un beau bébé il pese "+str(os.path.getsize(fichiervcf))+" octets")
-
+            messagebox.showinfo("kowalski's analysis","like we say in France: c'est un beau bébé il pese "+str(os.path.getsize(fichiervcf))+" octets"+"\n"+"let's go!")
             
                 #### just some kludges with your file for getting his extension
             name=re.search("\s(.{6})(.*)'\s(.{4})\=",fichiervcf3)
             name2=name.group(2)
-            print("nom du fichier: "+name2)
             extention=re.search("\.(.+)",name2)
             extention2=extention.group(1)
-            messagebox.showinfo("kowalski's analysis","fichier au format "+extention2)
+            messagebox.showinfo("kowalski's analysis","file's format is "+extention2)
 
 
                 ### just checking his extension now 
             if (extention2=="vcf.tar.gz" or extention2=="vcf.tgz"or extention2=="vcf" ):
                 if(extention2=="vcf.tar.gz" or extention2=="vcf.tgz"):
-                    print("le fichier va etre decompresser")
                     with gzip.open(fichiervcf2,"rb") as decompresse:
                         print(decompresse.read())
                     #### to be continued 
@@ -201,7 +197,7 @@ if os.path.isfile(fichiervcf) :
                     ### dictionary with chromosome->variation type -> position+references+changes 
                     if (messagebox.askquestion("kowalski's analysis","Do you want to see every variations sort by chromosome ?")=="yes"):
                         top = Toplevel()
-                        top.title("kowalski's analysis")
+                        top.title("Chromosome dictionary ")
                         scrollbarY = Scrollbar(top)
                         scrollbarY.pack(side=RIGHT, fill=Y)
                         msg = Message(top, text=dicovar)
@@ -211,59 +207,59 @@ if os.path.isfile(fichiervcf) :
 
                     if (messagebox.askquestion("kowalski's analysis","Do you want to see every chromosomes sort by variation ?")=="yes"):
                         top = Toplevel()
-                        top.title("kowalski's analysis")
+                        top.title("Dictionary of variations")
                         scrollbarY = Scrollbar(top)
                         scrollbarY.pack(side=RIGHT, fill=Y)
                         msg = Message(top, text=dico2)
                         msg.pack(side=LEFT, fill=BOTH,expand=True)
                         button = Button(top, text="Dismiss", command=top.destroy)
                         button.pack()
-                    else:
-                        ### analysis for a single chromosome, you can choose one no more no less 
-                        if (messagebox.askquestion("kowalski's analysis","Do you want to see every variations for one chromosome ?")=="yes"):
-                            def sel() :
-                                select = "kowalski's analysis of chromosome " + str(box.get())
-                                label2.config(text = select)
-                            box = StringVar()
-                            for item in dicovar.keys() :
-                                Radiobutton(fenetre, text = item, variable = box, value = item, command = sel).pack()
-                            label2 = Label(fenetre)
-                            bouton2 = Button(fenetre, text = "Analysis", command = fenetre.quit)
-                            bouton2.pack()
-                            fenetre.mainloop()
-                            messagebox.showinfo("kowalski's analysis", "Here the informations from " + str(box.get()))
-                            messagebox.showinfo("kowalski's analysis", dicovar[str(box.get())])
-                            top2 = Toplevel()
-                            top2.title(" kowalski's analysis")
-                            scrollbarY = Scrollbar(top2)
-                            scrollbarY.pack(side=RIGHT, fill=Y)
-                            msg2 = Message(top2, text=dicovar[str(box.get())])
-                            msg2.pack(fill=BOTH,expand=True)
-                            button2 = Button(top2, text="Dismiss", command=top2.destroy)
-                            button2.pack()
+                    
+                    ### analysis for a single chromosome, you can choose one no more no less 
+                    if (messagebox.askquestion("kowalski's analysis","Do you want to see every variations for one chromosome ? you can choose which one")=="yes"):
+                        def sel() :
+                            select = "kowalski's analysis of chromosome " + str(box.get())
+                            label2.config(text = select)
+                        box = StringVar()
+                        for item in dicovar.keys() :
+                            Radiobutton(fenetre, text = item, variable = box, value = item, command = sel).pack()
+                        label2 = Label(fenetre)
+                        bouton2 = Button(fenetre, text = "Analysis", command = fenetre.quit)
+                        bouton2.pack()
+                        fenetre.mainloop()
+                        messagebox.showinfo("Chromosome", "Here the informations from " + str(box.get()))
+                        messagebox.showinfo("Chromosome", dicovar[str(box.get())])
+                        top2 = Toplevel()
+                        top2.title(" Chromosome")
+                        scrollbarY = Scrollbar(top2)
+                        scrollbarY.pack(side=RIGHT, fill=Y)
+                        msg2 = Message(top2, text=dicovar[str(box.get())])
+                        msg2.pack(fill=BOTH,expand=True)
+                        button2 = Button(top2, text="Dismiss", command=top2.destroy)
+                        button2.pack()
 
-                        ### analysis for a single chromosome, you can choose one no more no less
-                        else :
-                            if (messagebox.askquestion("kowalski's analysis","Do you want to see every chromosomes for one variation ?")=="yes"):
-                                def sel2() :
-                                    select2 = "We will analyze the type of variation also known as " + str(box2.get())
-                                    label3.config(text = select2)
-                                box2 = StringVar()
-                                for item in dico2.keys() :
-                                    Radiobutton(fenetre, text = item, variable = box2, value = item, command = sel2).pack()
-                                label3 = Label(fenetre)
-                                bouton3 = Button(fenetre, text = "Analysis", command = fenetre.quit)
-                                fenetre.mainloop()
-                                messagebox.showinfo("kowalski's analysis", "Here the informations from " + str(box2.get()))
-                                messagebox.showinfo("kowalski's analysis", dico2[str(box2.get())])
-                                top3 = Toplevel()
-                                top3.title("kowalski's analysis")
-                                scrollbarY = Scrollbar(top3)
-                                scrollbarY.pack(side=RIGHT, fill=Y)
-                                msg3 = Message(top3, text=dico2[str(box2.get())])
-                                msg3.pack(fill=BOTH,expand=True)
-                                button3 = Button(top3, text="Dismiss", command=top3.destroy)
-                                button3.pack()
+                    ### analysis for a single chromosome, you can choose one no more no less
+                        
+                    if (messagebox.askquestion("kowalski's analysis","Do you want to see every chromosomes for one variation ? you can choose which one")=="yes"):
+                        def sel2() :
+                            select2 = "We will analyze the type of variation also known as " + str(box2.get())
+                            label3.config(text = select2)
+                        box2 = StringVar()
+                        for item in dico2.keys() :
+                            Radiobutton(fenetre, text = item, variable = box2, value = item, command = sel2).pack()
+                            label3 = Label(fenetre)
+                            bouton3 = Button(fenetre, text = "Analysis", command = fenetre.quit)
+                            fenetre.mainloop()
+                            messagebox.showinfo("Type of variation", "Here the informations from " + str(box2.get()))
+                            messagebox.showinfo("Type of variation", dico2[str(box2.get())])
+                            top3 = Toplevel()
+                            top3.title("Type of variation")
+                            scrollbarY = Scrollbar(top3)
+                            scrollbarY.pack(side=RIGHT, fill=Y)
+                            msg3 = Message(top3, text=dico2[str(box2.get())])
+                            msg3.pack(fill=BOTH,expand=True)
+                            button3 = Button(top3, text="Dismiss", command=top3.destroy)
+                            button3.pack()
 
 
                     ### satisfaction survey
