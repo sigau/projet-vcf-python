@@ -1,5 +1,169 @@
-readme
-a installer : matpltlib
-	      tkinter
-	      python3
+
+												Kowalski-Analysis
+											     VCF file analizer tool
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Auteurs: 	Gautier Debaecker                                                       M1SNS-BCD
+	 				                                               	UE: HMIN113M
+	 	Lina Mahrach 		                                                2018-2019
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Version : 1.0.0
+
+
+Dependency: 	
+Python3 (sudo apt-get install python3) 
+Tkinter (sudo apt-get install python3-tk)
+Matplotlib (sudo apt-get install python3-matplotlib)
+
+Generality :
+Kowalski-Analysis is a bioinformatic tool for basics analysis of VCF files. It’s composed of one script whom open, check and give you the most important informations of your vcf file. 
+After some checking, Kowalski-Analysis will propose you to see :
+	the number and the repartition in percentage of each variations (insertions, substitutions and deletions ) 
+	then a pie chart of the percentage of each variations, 
+	all informations by type of variations sort by chromosomes,
+	all informations by chromosome sort by variation, 
+	all informations by variations for one chromosome, 
+	all informations of every chromosomes for one variation.
+The script has been coded under Python3, using Tkinter for the graphic interface and Matplotlib for plotting the graph.   
+
+How to use Kowalski-Analysis (you can find figure to help you in the  « figure_to-help_you » folder):
+1) Open your terminal.
+2) Go to Kowalski-Analysis folder with the command « cd » (figure 1).
+3) Execute the script Kowalsky_analysis with « python3 Kowalsky_analysis » or « ./Kowalsky_analysis » in the local folder.(figure 2)
+4) A window will open letting you chose your vcf file. (figure 3)
+5) Double clic on your file. 
+6) A Tkinter window will open, click on the button continue. (figure 4)
+ You’ll have some verifications just click the « ok »button 
+7) If you want to see the number and the repartition in percentage of each variations click on  the« oui yes» button (figure 5 & figure 6), else click on the « no/non » button .
+8) If you want to see a pie chart of the percentage of each variations, click on the « oui /yes» button (figure 7 & figure 8), else click on the « no/non » button .
+8bis) If you choose to see the pie chart you can save it by clicking the save icon ( the floppy disk)
+don’t forget to click on the « continue » button when you have finish with the pie chart.
+9) If you want to see all informations by type of variations sort by chromosomes ,click on the « oui /yes» button(figure 9 & figure 10), else click on the « no/non » button .
+10) If you want to see all informations by chromosome sort by variation,click on the « oui /yes» button (figure 11 & figure 12),else click on the « no/non » button .
+11) If you want to see all informations by variations for one chromosome,,click on the « oui /yes» button (figure 13 & figure 14),else click on the « no/non » button .
+11bis) choose the chromosome you want to see and click the « analysis » button
+12) If you want to see all informations of every chromosomes for one variation.,click on the « oui /yes» button(figure 15),else click on the « no/non » button .
+12bis) choose the variation type you want to see and click the « analysis » button
+13) ???
+14) PROFIT !!
+
+Note from the author :
+Due to lack of time I haven’t been able to finish the next goal (which will surely come in a next update stay tuned ) :
+	possibility to use compressed file (.tgz)
+	better graphic interface with more color and Material Theming
+	more readable results with the dictionaries when using the graphic interface 
+	analysis of multiple files
+	thanks mom and dad for the dinner
+	possibility to create a text file with the information that you care before closing the program
+	possibility to use other version of vcf
+	create an icon for the programm
+
+Constraints:
+	you can only analyse file one by one 
+	the file in input should be in the .vcf format in the vcf 4.1 version 	
+
+Change log :
+1.0.0 : fix some minor bugs
+0.9.5 : delete the posibility to use the only the terminal 
+0.9.0 : add a graphic interface using Tkinter 
+0.8.0 : You can use the program using only the terminal 
+
+Licence :
+Kowalski-Analysis is under the WTFPL :
+
+        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+                   Version 2, December 2004
+
+Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+
+Everyone is permitted to copy and distribute verbatim or modified
+copies of this license document, and changing it is allowed as long
+as the name is changed.
+
+           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+ 0. You just DO WHAT THE FUCK YOU WANT TO and pay me a beer.
+
+
+
+
+
+Terms of Use ("Terms")  
+======================
+
+Last updated: December 20, 2018
+
+Please read these Terms of Use ("Terms", "Terms of Use") carefully before
+using the Kowalski_Analysis tool (the "Service")
+operated by Debaecker Gautier ("us", "we", or "our").
+
+Your access to and use of the Service is conditioned on your acceptance of and
+compliance with these Terms. These Terms apply to all visitors, users and
+others who access or use the Service.
+
+By accessing or using the Service you agree to be bound by these Terms. If you
+disagree with any part of the terms then you may not access the Service. 
+
+Links To Other Web Sites  
+------------------------
+
+Our Service may contain links to third-party web sites or services that are
+not owned or controlled by Kowalski_Analysis.
+
+Kowalski_Analysis has no control over, and assumes no responsibility for, the
+content, privacy policies, or practices of any third party web sites or
+services. You further acknowledge and agree that Kowalski_Analysis shall not
+be responsible or liable, directly or indirectly, for any damage or loss
+caused or alleged to be caused by or in connection with use of or reliance on
+any such content, goods or services available on or through any such web sites
+or services.
+
+We strongly advise you to read the terms and conditions and privacy policies
+of any third-party web sites or services that you visit.
+
+Termination  
+-----------
+
+We may terminate or suspend access to our Service immediately, without prior
+notice or liability, for any reason whatsoever, including without limitation
+if you breach the Terms.
+
+All provisions of the Terms which by their nature should survive termination
+shall survive termination, including, without limitation, ownership
+provisions, warranty disclaimers, indemnity and limitations of liability.
+
+Governing Law  
+-------------
+
+These Terms shall be governed and construed in accordance with the laws of
+France, without regard to its conflict of law provisions.
+
+Our failure to enforce any right or provision of these Terms will not be
+considered a waiver of those rights. If any provision of these Terms is held
+to be invalid or unenforceable by a court, the remaining provisions of these
+Terms will remain in effect. These Terms constitute the entire agreement
+between us regarding our Service, and supersede and replace any prior
+agreements we might have between us regarding the Service.
+
+Changes  
+-------
+
+We reserve the right, at our sole discretion, to modify or replace these Terms
+at any time. If a revision is material we will try to provide at least 30 days
+notice prior to any new terms taking effect. What constitutes a material
+change will be determined at our sole discretion.
+
+By continuing to access or use our Service after those revisions become
+effective, you agree to be bound by the revised terms. If you do not agree to
+the new terms, please stop using the Service.
+
+Contact Us  
+----------
+
+If you have any questions about these Terms, please contact us.
+
 
