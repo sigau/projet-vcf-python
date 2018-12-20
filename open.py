@@ -8,28 +8,32 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter.filedialog import *
 from pprint import pprint
+import webbrowser 
 
-#a utiliser avec VCF4.1
-#teste sur ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/
+###use with VCF4.1 file please
+###test on ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/
 
+###graphic interface begin here
 fenetre = Tk()
-label = Label(fenetre, text="kowalski's analysis",padx=500,pady=500)
-bouton=Button(fenetre, text="continuer", command=fenetre.quit)
+fenetre.geometry()
+label = Label(fenetre, text="kowalski's analysis")
+bouton=Button(fenetre, text="continu", command=fenetre.quit)
 bouton.pack()
-fichiervcf=askopenfilename(title="quel fichier voulez-vous ouvrir?",filetypes=[("fichier vcf",".vcf",),("fichier vcf compresser .tgz","vcf.tgz"),("fichier vcf compresser vcf.tar.gz","vcf.tar.gz"),('all files a tes risque et perils','.*')])
-label.pack()
+fichiervcf=askopenfilename(title="quel fichier voulez-vous ouvrir?",filetypes=[("vcf file",".vcf",),('all files a tes risque et perils','.*')])
+    #for the next update
+    #("fichier vcf compresser .gz",".vcf.gz"),("fichier vcf compresser vcf.tar.gz",".vcf.tar.gz")
+label.pack(fill=BOTH, expand=True)
 fenetre.mainloop()
-#####ouvrir/recuperer le fichier######
-#fichiervcf=sys.argv[1]
 
-
+####regex and dictionaries
 def analyse(fichiervcf):
 
     with open(fichiervcf,"r") as fichiervcf2:
-        #tesver=fichiervcf2.readline()
-        #print(tesver)
+
         global dicovar
         dicovar={}
+        global dico2
+        dico2={}
         global liste
         liste=[]
         global substitution
@@ -45,68 +49,52 @@ def analyse(fichiervcf):
 
 
         for ligne in fichiervcf2:
-            info=re.search("(^\d*|^X|^Y)\s(\d*)\s(.*)\s([ACGT]*)\s([ACGT]*)\s(\d*|.)\s(\S*)\s",ligne)
+            info=re.search("(^\d*|^X|^Y)\s(\d*)\s(.*)\s([ACGT]*)\s([ACGT]*|\.|<.*>)\s(\d*|.)\s(\S*)\s",ligne)
             
 
-        #recuperation du chromosome("(^\d*|^X|^Y)\s")
+        ### getting the damn chromosome("(^\d*|^X|^Y)\s")
             if info :
                 chromosome="chromosome "+info.group(1)
-                #print(chromosome) #ok
 
-        #recuperation de la position("\s(\d*)\s")s
-            #if info :
+        ### getting the damn position("\s(\d*)\s")s
                 position=info.group(2)
-                #print(position)
 
-        #recuperation Id("\s(.*)\s")
-            #if info :
+        ### getting the damn Id("\s(.*)\s")
                 identifiant=info.group(3)
-                #print(identifiant)
 
-        #recuperation de la base de reference ("\s([ACGT]*)\s")
-            #if info :
+
+        ### getting the damn reference's Nucleobase ("\s([ACGT]*)\s")
                 ref=info.group(4)
-                #print(ref)
 
-        #recuperation de la variation ("\s([ACGT]*)\s")
-            #if info:
+        ### getting the damn change/variant ("\s([ACGT]*)\s")
                 alt=info.group(5)
-                #print(alt)
 
-        #recuperation de la qualité ("\s(\d*|.)\s")
-            #if info :
+        ### getting the damn quality ("\s(\d*|.)\s")
                 qualite=info.group(6)
-                #print(qualite)
                     
         #recuperation du filtre ("\s(\S*)\s")
-            #if info :
                 filtre=info.group(7)
-                #print(filtre)
 
 
-        #compte des variation 
-            #compte des deletions
+        ### variations' count  
+            ### deletions' count 
                 if ((len(ref)>len(alt))or( alt=="-")):
                     deletion+=1
                     variation+=1
-                    #print("test deletion")
-                    #print("test variation")
                     typevariant="deletion"
-            #compte des insertion
+            ### insertions' count
                 if(len(ref)<len(alt)):
                     insertion+=1
                     variation+=1
-                    #print("test insertion")
-                    #print("test variation")
                     typevariant="insertion"
-                #compte des substitution
+            ### substitutions' count
                 if (len(ref)==len(alt)):
                     substitution+=1
                     variation+=1
-                    #print("test substitution")
-                    #print("test variation")
                     typevariant="substitution"
 
+
+        ####dictionaries
                 liste=[position,ref,alt]
                 if chromosome in dicovar.keys():
                     if typevariant in dicovar[chromosome].keys():
@@ -119,24 +107,30 @@ def analyse(fichiervcf):
                     dicovar[chromosome][typevariant]=typevariant
                     dicovar[chromosome][typevariant]=liste
 
+                if typevariant in dico2.keys():
+                    if chromosome in dico2[typevariant].keys():
+                        dico2[typevariant][chromosome].append(liste)
+                    else :
+                        dico2[typevariant][chromosome]=chromosome
+                        dico2[typevariant][chromosome]=liste
+                else:
+                    dico2[typevariant]={}
+                    dico2[typevariant][chromosome]=chromosome
+                    dico2[typevariant][chromosome]=liste
 
 
-    #print("test final")
-    #print("nb variation= "+ str(variation)+"\n"+"nb substitution= "+str(substitution)+"\n"+"nb insertion="+str(insertion)+"\n"+"nb deletions= "+str(deletion))
 
-        # ù de chaque type de variation
+
+        ### number of each variations' type
     global pins
     pins=(insertion/variation)*100
     global pdel
     pdel=(deletion/variation)*100
     global psub
     psub=(substitution/variation)*100
-    #print("% substitution= "+str(psub)+"%"+"\n"+"% insertion="+str(pins)+"%"+"\n"+"% deletions= "+str(pdel)+"%")
 
 
-
-
-######verifier que c'est un fichier######
+#### file's checking 
 if os.path.isfile(fichiervcf) :
     messagebox.showinfo("kowalski's analysis","ok c'est bon c'est un fichier, on continue !")
     with open(fichiervcf,"r") as fichiervcf2 :
@@ -144,123 +138,153 @@ if os.path.isfile(fichiervcf) :
         fichiervcf4=fichiervcf2.readlines() 
 
 
-                 ######verifier que le fichier n'est pas vide###### 
+                 #### just checking that the file is not empty
         if ( os.path.getsize(fichiervcf)!=0):
             messagebox.showinfo("kowalski's analysis","c'est un beau bébé il pese "+str(os.path.getsize(fichiervcf))+" octets"+"\n"+"on continue !")
-            #print("c'est un beau bébé il pese "+str(os.path.getsize(fichiervcf))+" octets")
+            print("c'est un beau bébé il pese "+str(os.path.getsize(fichiervcf))+" octets")
 
             
-                ######recup de l'extention######
+                #### just some kludges with your file for getting his extension
             name=re.search("\s(.{6})(.*)'\s(.{4})\=",fichiervcf3)
             name2=name.group(2)
             print("nom du fichier: "+name2)
             extention=re.search("\.(.+)",name2)
             extention2=extention.group(1)
             messagebox.showinfo("kowalski's analysis","fichier au format "+extention2)
-            #print("fichier au format "+extention2)
 
 
-                #####verification de l'extention ######
-            #autoriser le .tgz uniquememnt s'il contient que un seul fichier ?
+                ### just checking his extension now 
             if (extention2=="vcf.tar.gz" or extention2=="vcf.tgz"or extention2=="vcf" ):
                 if(extention2=="vcf.tar.gz" or extention2=="vcf.tgz"):
                     print("le fichier va etre decompresser")
-                    with gzip.open(fichiervcf2,"r") as decompresse:
-                        print(decompresse)
-                    ####a completer#####
-
+                    with gzip.open(fichiervcf2,"rb") as decompresse:
+                        print(decompresse.read())
+                    #### to be continued 
                 else :
-                    #fichiervcf4=fichiervcf2.readlines()
                     contenu=str(fichiervcf4)
                     version=re.search("fileformat=(.{7})",contenu)
 
 
-                    ######verification de la version####
+                    #### just checking his version 
                 if (version.group(1)=="VCFv4.1"):
-                    messagebox.showinfo("kowalski's analysis","c'est un VCF en version 4.1")
-                    #print("c'est un VCF en version 4.1")
+                    messagebox.showinfo("kowalski's analysis","tis is a v4.1 VCF file great !")
                 
 
-                    #est-ce que le corps est vide ?
+                    ### never let a man... a file with a empty body soooo just checking  
                     for line in fichiervcf4:   
                         corps=re.search("^\w",line)
                         if re.search("^(#)",line):
                              continue
                         if corps:
-                            #print("je vois la tete et un corps")
-                            messagebox.showinfo("kowalski's analysis","je vois la tete et un corps")
+                            messagebox.showinfo("kowalski's analysis","I see.. I see... a head and a body !")
                             break
                         else :
-                            #print("pas de corps")
-                            messagebox.showerror("kowalski's analysis","pas de corps !")
+                            messagebox.showerror("kowalski's analysis","nobody! get it ? no body like nobody ")
                             exit()
 
                     analyse(name2)
-                    if (messagebox.askquestion("kowalski's analysis","print analyse du fichier ?")=="yes"):
-                        nbvar=("nb variation= "+ str(variation)+"\n"+"nb substitution= "+str(substitution)+"\n"+"nb insertion="+str(insertion)+"\n"+"nb deletions= "+str(deletion))
-                        pcvar=("pourcentage de substitution= "+str(psub)+"%"+"\n"+"pourcentage de insertion="+str(pins)+"%"+"\n"+"pourcentage de deletions= "+str(pdel)+"%")
+
+                    ### analysis of the file
+                    if (messagebox.askquestion("kowalski's analysis","do you want to see your file analysis ?")=="yes"):
+                        nbvar=("number of variations= "+ str(variation)+"\n"+"number of substitutions= "+str(substitution)+"\n"+"number of insertions="+str(insertion)+"\n"+"number of deletions= "+str(deletion))
+                        pcvar=("rate of substitution= "+str(psub)+"%"+"\n"+"rate of insertion="+str(pins)+"%"+"\n"+"rate of deletions= "+str(pdel)+"%")
                         messagebox.showinfo("kowalski's analysis",nbvar +"\n"+pcvar)
-                    if (messagebox.askquestion("kowalski's analysis","voulez-vous print le grouphique ?")=="yes"):
+
+                    ### representation of the number of each variation in a pie chart    
+                    if (messagebox.askquestion("kowalski's analysis","I just made a pie do you want to see it ?")=="yes"):
                         labels=["deletions","substitution","insertion"]
                         data=[deletion,substitution,insertion]
                         explode=(0,0,0)
                         plt.pie(data,explode=explode,labels=labels,autopct='%1.1f%%',startangle=90,shadow=True)
                         plt.axis('equal') 
-                        print("pour continuer cliquer sur le bouton continuer")
-                        plt.show()  
-                    if (messagebox.askquestion("kowalski's analysis","voulez-vous print le dico entier? ?")=="yes"):
-                        #messagebox.showinfo("kowalski's analysis",dicovar)
+                        plt.show()
+                    ### dictionary with chromosome->variation type -> position+references+changes 
+                    if (messagebox.askquestion("kowalski's analysis","Do you want to see every variations sort by chromosome ?")=="yes"):
                         top = Toplevel()
-                        top.title("titre kowalski's analysis")
+                        top.title("kowalski's analysis")
                         scrollbarY = Scrollbar(top)
                         scrollbarY.pack(side=RIGHT, fill=Y)
-                        scrollbarX = Scrollbar(top)
-                        scrollbarX.pack(side=LEFT, fill=X)
                         msg = Message(top, text=dicovar)
-                        msg.pack(side=LEFT, fill=BOTH,expand=1)
+                        msg.pack(side=LEFT, fill=BOTH,expand=True)
                         button = Button(top, text="Dismiss", command=top.destroy)
                         button.pack()
-                        mainloop()
-                        #pprint(dicovar)
+
+                    if (messagebox.askquestion("kowalski's analysis","Do you want to see every chromosomes sort by variation ?")=="yes"):
+                        top = Toplevel()
+                        top.title("kowalski's analysis")
+                        scrollbarY = Scrollbar(top)
+                        scrollbarY.pack(side=RIGHT, fill=Y)
+                        msg = Message(top, text=dico2)
+                        msg.pack(side=LEFT, fill=BOTH,expand=True)
+                        button = Button(top, text="Dismiss", command=top.destroy)
+                        button.pack()
                     else:
-                        if (messagebox.askquestion("kowalski's analysis","voulez-vous print le dico pour un chromosome particulier ?")=="yes"):
+                        ### analysis for a single chromosome, you can choose one no more no less 
+                        if (messagebox.askquestion("kowalski's analysis","Do you want to see every variations for one chromosome ?")=="yes"):
+                            def sel() :
+                                select = "kowalski's analysis of chromosome " + str(box.get())
+                                label2.config(text = select)
+                            box = StringVar()
+                            for item in dicovar.keys() :
+                                Radiobutton(fenetre, text = item, variable = box, value = item, command = sel).pack()
+                            label2 = Label(fenetre)
+                            bouton2 = Button(fenetre, text = "Analysis", command = fenetre.quit)
+                            bouton2.pack()
+                            fenetre.mainloop()
+                            messagebox.showinfo("kowalski's analysis", "Here the informations from " + str(box.get()))
+                            messagebox.showinfo("kowalski's analysis", dicovar[str(box.get())])
+                            top2 = Toplevel()
+                            top2.title(" kowalski's analysis")
+                            scrollbarY = Scrollbar(top2)
+                            scrollbarY.pack(side=RIGHT, fill=Y)
+                            msg2 = Message(top2, text=dicovar[str(box.get())])
+                            msg2.pack(fill=BOTH,expand=True)
+                            button2 = Button(top2, text="Dismiss", command=top2.destroy)
+                            button2.pack()
+
+                        ### analysis for a single chromosome, you can choose one no more no less
+                        else :
+                            if (messagebox.askquestion("kowalski's analysis","Do you want to see every chromosomes for one variation ?")=="yes"):
+                                def sel2() :
+                                    select2 = "We will analyze the type of variation also known as " + str(box2.get())
+                                    label3.config(text = select2)
+                                box2 = StringVar()
+                                for item in dico2.keys() :
+                                    Radiobutton(fenetre, text = item, variable = box2, value = item, command = sel2).pack()
+                                label3 = Label(fenetre)
+                                bouton3 = Button(fenetre, text = "Analysis", command = fenetre.quit)
+                                fenetre.mainloop()
+                                messagebox.showinfo("kowalski's analysis", "Here the informations from " + str(box2.get()))
+                                messagebox.showinfo("kowalski's analysis", dico2[str(box2.get())])
+                                top3 = Toplevel()
+                                top3.title("kowalski's analysis")
+                                scrollbarY = Scrollbar(top3)
+                                scrollbarY.pack(side=RIGHT, fill=Y)
+                                msg3 = Message(top3, text=dico2[str(box2.get())])
+                                msg3.pack(fill=BOTH,expand=True)
+                                button3 = Button(top3, text="Dismiss", command=top3.destroy)
+                                button3.pack()
 
 
-                            ######a corriger pour ajouter des liste deroulantes####
-                            #print(dicovar.keys())
-                            listchr=[]
-                            #scrollbar = Scrollbar(fenetre)
-                            #scrollbar.pack(side=RIGHT, fill=Y)
-                            #listetk = Listbox(fenetre,width=60,height=10,font=('times',13),yscrollcommand=scrollbar.set)
-                            #listetk = Listbox(fenetre,width=60,height=10,font=('times',13))
-                            listetk = Listbox(fenetre)
-                            listetk.pack()
-                            for cle in dicovar.keys():
-                                listchr.append(cle)
-                                listetk.insert(END,cle)
-                            
-                            #listetk.config(yscrollcommand=scrollbar.set)
-                            #scrollbar.config(command=listetk.yview)
-                            listetk.mainloop()
+                    ### satisfaction survey
+                    if (messagebox.askyesno("kowalski's analysis satisfaction survey","are you satisfied of kowalski's analysis ?  ")):
+                        webbrowser.open("https://j.gifs.com/nrDwvl.gif") 
+                    else:
+                        webbrowser.open("https://j.gifs.com/N9P34z.gif")
 
-                            #item=listetk.get(listetk.curselection())
-                            print("item")
-                            print("liste avec tkinter")
-                    
-                    messagebox.showinfo("kowalski's analysis","merci d'avoir utiliser kowalski !" )
-                    #print("merci d'avoir utiliser kowalski ! ")               
+
+                    messagebox.showinfo("kowalski's analysis","thank you for using kowalski!" )               
                     fichiervcf2.close()
+
+
+                    ### every time you don't respect the law you will end here: error zone
                 else :
-                    messagebox.showerror("kowalski's analysis","mettre un fichier en version 4.1 les autres sont hasbeen ou dans le turfshowinfou")
-                    #print("mettre un fichier en version 4.1 les autres sont hasbeen ou dans le turfu")
+                    messagebox.showerror("kowalski's analysis","put a file in version 4.1 the others are hasbeen or in the turfu")
 
             else:
-                messagebox.showerror("kowalski's analysis","les fichier accepter sont .vcf ou .vcf.tar.gz ou vcr.tgz")
-                #print("les fichier accepter sont .vcf ou .vcf.tar.gz ou vcr.tgz")
+                messagebox.showerror("kowalski's analysis","for the time being, only .vcf files are acepted")
                      
         else :
-            messagebox.showerror("kowalski's analysis","fichier vide")
-            #print("fichier vide")
+            messagebox.showerror("kowalski's analysis","empty file")
 else :
-    messagebox.showerror("kowalski's analysis","seul les fichiers individuels sont autorisé")
-    #print("seul les fichiers individuels sont autorisé")
+    messagebox.showerror("kowalski's analysis","one file at a time please, I'm not superman I'm just a program made by a student!")
